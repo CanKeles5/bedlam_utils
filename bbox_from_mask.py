@@ -134,11 +134,15 @@ if __name__ == '__main__':
     png_root = os.path.join(root, "png")
     mask_root = os.path.join(root, "masks")
     
+    new_data_root = r"C:\Users\Can\Desktop\bedlam_utils\toy_data\crop"
+    
     for png_seq in sorted(glob.glob(os.path.join(png_root, "*"))):
         cfps = 0
         
         #Create the folder for the new sequence
-        #new_seq_dir = os.path.join(data_, f"{os.path.normpath(png_seq).split(os.sep)[-3]}_{os.path.split(png_seq)[-1]}")
+        new_seq_dir = os.path.join(new_data_root, f"{os.path.normpath(png_seq).split(os.sep)[-3]}_{os.path.split(png_seq)[-1]}")
+        print(f"new_seq_dir: {new_seq_dir}")
+        
         #os.mkdir(new_seq_dir) #might not be necessary
 
         for png_pth in sorted(glob.glob(os.path.join(png_seq, "*.png"))):
@@ -151,6 +155,8 @@ if __name__ == '__main__':
                 #new_png_pth = os.path.join(new_seq_dir, f"rgb_{id}.png")
                 
                 rgb_image = cv2.imread(png_pth)
+                
+                print(f"png_pth: {png_pth}")
                 
                 #Set desired image size
                 #new_width = 512
@@ -173,6 +179,7 @@ if __name__ == '__main__':
                 # Pad the numeric part with leading zeros if needed
                 num = num.zfill(6)
                 
+                
                 # Generate the new strings for pngs
                 for i in range(50):  # Generating 10 strings as an example
                     new_string_body = f"{prefix}_{num}_{suffix[:-4]}_{str(i).zfill(2)}_body.png"
@@ -191,9 +198,13 @@ if __name__ == '__main__':
                         
                         print(f"cropped_instance shape: {cropped_instance.shape}")
                         
-                        cv2.imwrite(f"cropped_{i}.png", cropped_instance)
+                        crop_pth = f"{png_pth[:-4]}_{str(i).zfill(2)}.png"
+                        crop_pth = crop_pth.replace("\\png\\", "\\crop\\")
+                        print(f"i: {i}, crop_pth: {crop_pth}")
+                        
+                        cv2.imwrite(crop_pth, cropped_instance)
 
-                        draw_bounding_boxes(rgb_image, bbox)
+                        #draw_bounding_boxes(rgb_image, bbox)
                         
                         print(f"bbox: {bbox}")
                     else:
