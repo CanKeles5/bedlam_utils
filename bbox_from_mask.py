@@ -115,19 +115,6 @@ def draw_bounding_boxes(image, bounding_boxes):
     return image
 
 
-"""
-# Example usage
-# Assuming 'mask' is a binary mask image where white pixels represent the person
-
-#mask = cv2.imread('person_mask.png', cv2.IMREAD_GRAYSCALE)  # Load the mask
-b_mask = cv2.imread('seq_000000_0000_00_body.png', cv2.IMREAD_GRAYSCALE)
-c_mask = cv2.imread('seq_000000_0000_00_clothing.png', cv2.IMREAD_GRAYSCALE)
-
-mask = join_masks(b_mask, c_mask)
-
-bounding_boxes = get_bounding_box(mask)
-"""
-
 if __name__ == '__main__':
     
     root = r"C:\Users\Can\Desktop\bedlam_utils\toy_data"
@@ -140,7 +127,8 @@ if __name__ == '__main__':
         cfps = 0
         
         #Create the folder for the new sequence
-        new_seq_dir = os.path.join(new_data_root, f"{os.path.normpath(png_seq).split(os.sep)[-3]}_{os.path.split(png_seq)[-1]}")
+        #new_seq_dir = os.path.join(new_data_root, f"{os.path.normpath(png_seq).split(os.sep)[-3]}_{os.path.split(png_seq)[-1]}")
+        new_seq_dir = os.path.join(new_data_root, os.path.split(png_seq)[-1])
         print(f"new_seq_dir: {new_seq_dir}")
         
         #os.mkdir(new_seq_dir) #might not be necessary
@@ -196,21 +184,19 @@ if __name__ == '__main__':
                         
                         cropped_instance = rgb_image[bbox[1]:bbox[1]+bbox[4], bbox[0]:bbox[0]+bbox[4]]
                         
-                        print(f"cropped_instance shape: {cropped_instance.shape}")
+                        #print(f"cropped_instance shape: {cropped_instance.shape}")
                         
                         crop_pth = f"{png_pth[:-4]}_{str(i).zfill(2)}.png"
                         crop_pth = crop_pth.replace("\\png\\", "\\crop\\")
-                        print(f"i: {i}, crop_pth: {crop_pth}")
+                        #print(f"i: {i}, crop_pth: {crop_pth}")
                         
                         cv2.imwrite(crop_pth, cropped_instance)
 
                         #draw_bounding_boxes(rgb_image, bbox)
                         
-                        print(f"bbox: {bbox}")
                     else:
                         break
                 ###
-                
                 
             cfps += 1
 
