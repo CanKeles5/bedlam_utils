@@ -128,10 +128,11 @@ if __name__ == '__main__':
         
         #Create the folder for the new sequence
         #new_seq_dir = os.path.join(new_data_root, f"{os.path.normpath(png_seq).split(os.sep)[-3]}_{os.path.split(png_seq)[-1]}")
-        new_seq_dir = os.path.join(new_data_root, os.path.split(png_seq)[-1])
-        print(f"new_seq_dir: {new_seq_dir}")
         
-        #os.mkdir(new_seq_dir) #might not be necessary
+        new_seq_dir = os.path.join(new_data_root, os.path.split(png_seq)[-1])
+        #print(f"new_seq_dir: {new_seq_dir}")
+        
+        os.mkdir(new_seq_dir) #might not be necessary
 
         for png_pth in sorted(glob.glob(os.path.join(png_seq, "*.png"))):
             
