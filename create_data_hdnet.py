@@ -11,7 +11,9 @@ import os
 import glob
 import shutil
 
+import bbox_from_mask
 
+#Change the image size!
 NEW_WIDTH, NEW_HEIGHT = (512, 384)
 
 
@@ -63,6 +65,24 @@ if __name__ == '__main__':
                     
                     print(f"mask_body_path: {mask_body_paths}")
                     print(f"mask_clothing_paths: {mask_clothing_paths}")
+                    
+                    for (b_pth, c_pth) in zip(mask_body_paths, mask_clothing_paths):
+                        b_mask = cv2.imread(b_pth, cv2.IMREAD_GRAYSCALE)
+                        c_mask = cv2.imread(c_pth, cv2.IMREAD_GRAYSCALE)
+                        
+                        mask = bbox_from_mask.join_masks(b_mask, c_mask)
+                        bbox = bbox_from_mask.get_bounding_box(mask)
+                        
+                        #Get only the bbox region (ie only the person instance) from the RGB image & mask
+                        img_crop = None
+                        mask_crop = None
+                        
+                        #Resize the image & masks if necessary
+                        resized_img_crop = cv2.resize(img_crop, (NEW_WIDTH, NEW_HEIGHT), interpolation=cv2.INTER_LINEAR)
+                        resized_mask_crop = cv2.resize(mask_crop, (NEW_WIDTH, NEW_HEIGHT), interpolation=cv2.INTER_LINEAR)
+                        
+                        cv2.imwrite(new_png_pth, resized_img_crop)
+                        cv2.imwrite(new_mask_pth, resized_mask_crop)
                     
                     ###############################################
             
